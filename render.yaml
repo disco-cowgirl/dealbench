@@ -1,0 +1,21 @@
+# Render.com blueprint — deploys the whole site (web service + free Postgres)
+# in one shot. In the Render dashboard: New + > Blueprint > point at this repo.
+services:
+  - type: web
+    name: dealbench
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dealbench-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: dealbench-db
+    plan: free
